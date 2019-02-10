@@ -1,5 +1,5 @@
 'use strict';
-var gl = require('./gl');
+var lib = require('./lib');
 
 var VERTEX_SIZE = 4 + ((4 * 2) * 4) + 4;
 var MAX_BATCH = 10922;
@@ -48,14 +48,14 @@ function Renderer(canvas) {
 
   var width  = canvas.width;
   var height  = canvas.height;
-  var prog = gl.createProgram(this.gl, vertexShaderSrc, fragmentShaderSrc);
+  var prog = lib.createProgram(this.gl, vertexShaderSrc, fragmentShaderSrc);
 
   this.vertexData = new ArrayBuffer(VERTEX_DATA_SIZE);
   this.vPositionData = new Float32Array(this.vertexData);
   this.vColorData = new Uint32Array(this.vertexData);
   this.vIndexData = new Uint16Array(INDEX_DATA_SIZE);
-  this.IBO = gl.createBuffer(this.gl, this.gl.ELEMENT_ARRAY_BUFFER, this.vIndexData.byteLength, gl.STATIC_DRAW);
-  this.VBO = gl.createBuffer(this.gl, this.gl.ARRAY_BUFFER, this.vertexData.byteLength, gl.DYNAMIC_DRAW);
+  this.IBO = lib.createBuffer(this.gl, this.gl.ELEMENT_ARRAY_BUFFER, this.vIndexData.byteLength, gl.STATIC_DRAW);
+  this.VBO = lib.createBuffer(this.gl, this.gl.ARRAY_BUFFER, this.vertexData.byteLength, gl.DYNAMIC_DRAW);
   this.count = 0;
 
   this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
