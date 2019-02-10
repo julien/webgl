@@ -2,15 +2,13 @@
   "name": "gl",
   "version": "1.0.0",
   "scripts": {
-    "start": "budo src/index.js:bundle.js --live -- -t uglifyify -c"
+    "start": "budo src/index.js:bundle.js --live"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "budo": "^11.6.0",
-    "eslint": "^5.13.0",
-    "uglify": "^0.1.5",
-    "uglifyify": "^5.0.1"
+    "eslint": "^5.13.0"
   }
 }
