@@ -45,6 +45,7 @@ function Renderer(canvas) {
   }
 
   this.gl = gl;
+  this.col = 0xFFFFFFFF;
 
   var width  = canvas.width;
   var height  = canvas.height;
