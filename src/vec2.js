@@ -1,8 +1,8 @@
 'use strict';
 
 function Vec2(x, y) {
-  this.x = x;
-  this.y = y;
+  this.x = x ? x : 0;
+  this.y = y ? y : 0;
 }
 
 Vec2.prototype.add = function (v2) {
