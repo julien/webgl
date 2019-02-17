@@ -13,7 +13,7 @@ function map(value, sourceMin, sourceMax, destMin, destMax) {
 }
 
 function random(min, max) {
-	return min + Math.random() * (max - min);
+  return min + Math.random() * (max - min);
 }
 
 exports.lerp = lerp;
