@@ -120,6 +120,11 @@ function onMouseMove(e) {
   mouse.y = e.clientY;
 }
 
+function onTouchMove(e) {
+  mouse.x = e.touches[0].clientX;
+  mouse.y = e.touches[0].clientY;
+}
+
 function spritesInit() {
   var hw = canvas.width * 0.5;
   var hh = canvas.height * 0.5;
@@ -149,7 +154,7 @@ function spritesInit() {
     sprites.vy[i] = math.random(-2, 2);
   }
 
-  sprites.count = 200;
+  sprites.count = 400;
 
   requestAnimationFrame(loop);
 }
@@ -192,7 +197,7 @@ function draw() {
   renderer.flush();
 }
 
-function loop(deltaTime) {
+function loop() {
   requestAnimationFrame(loop);
   update();
   draw();
@@ -216,6 +221,7 @@ onload = () => {
   mouse = new Vec2(canvas.width * 0.5, canvas.height * 0.5);
 
   document.body.addEventListener('mousemove', onMouseMove, false);
+  document.body.addEventListener('touchmove', onTouchMove, false);
   document.body.addEventListener('keydown', onKeyDown, false);
 };
 
