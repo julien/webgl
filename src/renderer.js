@@ -59,6 +59,13 @@ function Renderer(canvas) {
   this.VBO = lib.createBuffer(this.gl, this.gl.ARRAY_BUFFER, this.vertexData.byteLength, gl.DYNAMIC_DRAW);
   this.count = 0;
 
+  this.viewMatrix = new Float32Array([
+    2 / width, 0, 0, 0,
+    0, -2 / height, 0, 0,
+    0, 0, 1, 1,
+    -1, 1, 0, 0,
+  ]);
+
   this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
   this.gl.enable(this.gl.BLEND);
   this.gl.useProgram(prog);
@@ -85,6 +92,7 @@ function Renderer(canvas) {
   var locPosition = this.gl.getAttribLocation(prog, 'd');
   var locUv = this.gl.getAttribLocation(prog, 'e');
   var locColor = this.gl.getAttribLocation(prog, 'f');
+  var locViewMatrix = this.locViewMatrix = this.gl.getUniformLocation(prog, 'i');
 
   this.gl.enableVertexAttribArray(locRotation);
   this.gl.vertexAttribPointer(locRotation, 1, this.gl.FLOAT, false, VERTEX_SIZE, 0);
@@ -104,17 +112,21 @@ function Renderer(canvas) {
   this.gl.enableVertexAttribArray(locColor);
   this.gl.vertexAttribPointer(locColor, 4, this.gl.UNSIGNED_BYTE, true, VERTEX_SIZE, 36);
 
-  this.gl.uniformMatrix4fv(this.gl.getUniformLocation(prog, 'i'), false,
-    new Float32Array([
-      2 / width, 0, 0, 0,
-      0, -2 / height, 0, 0,
-      0, 0, 1, 1,
-      -1, 1, 0, 0,
-    ]),
-  );
+  this.gl.uniformMatrix4fv(locViewMatrix, false, this.viewMatrix);
 
   this.gl.activeTexture(this.gl.TEXTURE0);
 }
+
+Renderer.prototype.resize = function(width, height) {
+  if (this.gl.canvas.width !== width || this.gl.canvas.height !== height) {
+    this.gl.canvas.width = width;
+    this.gl.canvas.height = height;
+    this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+    this.gl.uniformMatrix4fv(this.locViewMatrix, false, this.viewMatrix);
+    return true;
+  }
+  return false;
+};
 
 Renderer.prototype.img = function(texture, x, y, w, h, r, tx, ty, sx, sy, u0, v0, u1, v1) {
   var x0  = x;
