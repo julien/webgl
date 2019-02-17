@@ -1,5 +1,5 @@
 'use strict';
-var lib = require('./lib');
+var lib = require('./gl-utils');
 
 var VERTEX_SIZE = 4 + ((4 * 2) * 4) + 4;
 var MAX_BATCH = 10922;
