@@ -6,7 +6,7 @@ var math = require('./math-utils');
 
 var MAX_FLEE_DISTANCE = 400;
 var MIN_FLEE_DISTANCE = 60;
-var SPRITE_COUNT = 1000;
+var SPRITE_COUNT = 5000;
 var SPRITE_MAX_FORCE = 30;
 var SPRITE_MAX_SPEED = 10;
 var fleeDistance = MAX_FLEE_DISTANCE * 0.5;
@@ -21,6 +21,7 @@ var sprites = {
   hw: Array.from(new Array(SPRITE_COUNT)).fill(0),
   px: Array.from(new Array(SPRITE_COUNT)).fill(0),
   py: Array.from(new Array(SPRITE_COUNT)).fill(0),
+  rgba: Array.from(new Array(SPRITE_COUNT)).fill(0),
   sx: Array.from(new Array(SPRITE_COUNT)).fill(0),
   sy: Array.from(new Array(SPRITE_COUNT)).fill(0),
   target: Array.from(new Array(SPRITE_COUNT)).fill(0),
@@ -48,7 +49,7 @@ function spriteArrive(sprites, idx, target) {
       speed = math.map(dist, 0, 100, 0, SPRITE_MAX_SPEED);
     }
 
-    desired.set_mag(speed);
+    desired.setMag(speed);
 
     force.x = desired.x - sprites.vx[idx];
     force.y = desired.y - sprites.vy[idx];
@@ -71,7 +72,7 @@ function spriteFlee(sprites, idx, target) {
     var dist = desired.getMag();
 
     if (dist < fleeDistance) {
-      desired.set_mag(SPRITE_MAX_SPEED);
+      desired.setMag(SPRITE_MAX_SPEED);
       desired.x *= -1;
       desired.y *= -1;
 
@@ -139,7 +140,9 @@ function spritesInit() {
     sprites.px[i] = hw + math.random(-hw, hw);
     sprites.py[i] = hh + math.random(-hh, hh);
 
-    var size = 1 + math.random(0, 1);
+    sprites.rgba[i] = Math.random() * 0xFFFFFFFF;
+
+    var size = 1 + math.random(-0.25, 0.25);
     sprites.sx[i] = sprites.sy[i] = size;
 
     var target = new Vec2(sprites.px[i], sprites.py[i]);
@@ -154,7 +157,7 @@ function spritesInit() {
     sprites.vy[i] = math.random(-2, 2);
   }
 
-  sprites.count = 400;
+  sprites.count = 2000;
 
   requestAnimationFrame(loop);
 }
@@ -171,8 +174,8 @@ function update() {
     sprites.ay[i] = 0;
 
     var a = spriteArrive(sprites, i, sprites.target[i]);
-    a.x *= 0.3;
-    a.y *= 0.3;
+    a.x *= 0.75;
+    a.y *= 0.75;
 
     var f = spriteFlee(sprites, i, mouse);
     f.x *= 0.75;
@@ -186,6 +189,7 @@ function update() {
 function draw() {
   renderer.cls();
   for (var i = 0; i < sprites.count; i++) {
+    renderer.col = sprites.rgba[i];
     renderer.img(texture,
       -sprites.hw[i], -sprites.hh[i],
       sprites.dx[i], sprites.dy[i], 0,
