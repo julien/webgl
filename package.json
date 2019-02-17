@@ -2,7 +2,8 @@
   "name": "gl",
   "version": "1.0.0",
   "scripts": {
-    "start": "budo src/index.js:bundle.js --live"
+    "start": "budo src/index.js:bundle.js --live",
+    "lint": "eslint src/*.js"
   },
   "keywords": [],
   "author": "",
