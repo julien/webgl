@@ -41,15 +41,15 @@ Vec2.prototype.dot = function (v2) {
   return this.x * v2.x + this.y * v2.y;
 };
 
-Vec2.prototype.from_angle = function (angle) {
+Vec2.prototype.fromAngle = function (angle) {
   return new Vec2(Math.cos(angle), Math.sin(angle));
 };
 
-Vec2.prototype.get_mag = function () {
+Vec2.prototype.getMag = function () {
   return Math.sqrt(this.x * this.x + this.y * this.y);
 };
 
-Vec2.prototype.get_magsq = function () {
+Vec2.prototype.getMagSq = function () {
   return this.x * this.x + this.y * this.y;
 };
 
@@ -63,7 +63,7 @@ Vec2.prototype.mul = function (value) {
 };
 
 Vec2.prototype.normalize = function () {
-  var m = this.get_mag();
+  var m = this.getMag();
   if (m !== 0 && m !== 1) {
     this.x /= m;
     this.y /= m;
@@ -71,7 +71,7 @@ Vec2.prototype.normalize = function () {
 };
 
 Vec2.prototype.limit = function (max) {
-  if (this.get_magsq() > max * max) {
+  if (this.getMagSq() > max * max) {
     this.normalize();
     this.x *= max;
     this.y *= max;
