@@ -84,7 +84,7 @@ Vec2.prototype.rotate = function (theta) {
   this.y = t * Math.sin(theta) + this.y * Math.cos(theta);
 };
 
-Vec2.prototype.set_mag = function (len) {
+Vec2.prototype.setMag = function (len) {
   this.normalize();
   this.x *= len;
   this.y *= len;
