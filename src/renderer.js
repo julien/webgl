@@ -76,11 +76,11 @@ function Renderer(canvas) {
     indexA += VERTICES_PER_QUAD, indexB += 4) {
 
     this.vIndexData[indexA + 0] = indexB,
-      this.vIndexData[indexA + 1] = indexB + 1,
-      this.vIndexData[indexA + 2] = indexB + 2,
-      this.vIndexData[indexA + 3] = indexB + 0,
-      this.vIndexData[indexA + 4] = indexB + 3,
-      this.vIndexData[indexA + 5] = indexB + 1;
+    this.vIndexData[indexA + 1] = indexB + 1,
+    this.vIndexData[indexA + 2] = indexB + 2,
+    this.vIndexData[indexA + 3] = indexB + 0,
+    this.vIndexData[indexA + 4] = indexB + 3,
+    this.vIndexData[indexA + 5] = indexB + 1;
   }
   this.gl.bufferSubData(this.gl.ELEMENT_ARRAY_BUFFER, 0, this.vIndexData);
 
@@ -207,7 +207,7 @@ Renderer.prototype.img = function(texture, x, y, w, h, r, tx, ty, sx, sy, u0, v0
     this.gl.drawElements(4, this.count * VERTICES_PER_QUAD, this.gl.UNSIGNED_SHORT, 0);
     this.count = 0;
   }
-}
+};
 
 Renderer.prototype.bkg = function(r, g, b) {
   this.gl.clearColor(r, g, b, 1.0);
