@@ -90,6 +90,8 @@ function spriteForce(sprites, idx, force) {
   if (idx < SPRITE_COUNT) {
     sprites.ax[idx] += force.x;
     sprites.ay[idx] += force.y;
+    sprites.sx[idx] += force.x * 0.25;
+    sprites.sy[idx] += force.x * 0.25;
   }
 }
 
