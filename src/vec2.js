@@ -5,11 +5,6 @@ function Vec2(x, y) {
   this.y = y ? y : 0;
 }
 
-Vec2.prototype.add = function (v2) {
-  this.x += v2.x;
-  this.y += v2.y;
-};
-
 Vec2.prototype.angle = function (v2) {
   if (this.x === 0 && this.y === 0 && v2.x === 0 && v2.y === 0) {
     return 0;
@@ -32,11 +27,6 @@ Vec2.prototype.dist = function (v2) {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-Vec2.prototype.div = function (value) {
-  this.x /= value;
-  this.y /= value;
-};
-
 Vec2.prototype.dot = function (v2) {
   return this.x * v2.x + this.y * v2.y;
 };
@@ -55,11 +45,6 @@ Vec2.prototype.getMagSq = function () {
 
 Vec2.prototype.heading = function () {
   return Math.atan2(this.y, this.x); // not sure if this should not be inverted
-};
-
-Vec2.prototype.mul = function (value) {
-  this.x *= value;
-  this.y *= value;
 };
 
 Vec2.prototype.normalize = function () {
@@ -88,11 +73,6 @@ Vec2.prototype.setMag = function (len) {
   this.normalize();
   this.x *= len;
   this.y *= len;
-};
-
-Vec2.prototype.sub = function (v2) {
-  this.x -= v2.x;
-  this.y -= v2.y;
 };
 
 module.exports = Vec2;
