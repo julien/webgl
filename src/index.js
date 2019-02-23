@@ -1,6 +1,6 @@
 'use strict';
 var Renderer = require('./renderer');
-var Vec2 = require('./vec2');
+var vec2 = require('./vec2');
 var lib = require('./gl-utils');
 var math = require('./math-utils');
 
@@ -34,52 +34,52 @@ var sprites = {
 };
 
 function spriteArrive(sprites, idx, target) {
-  var force = new Vec2();
+  var force = [0, 0];
 
   if (idx < SPRITE_COUNT) {
-    var desired = new Vec2(
-      target.x - sprites.px[idx],
-      target.y - sprites.py[idx]
-    );
+    var desired = [
+      target[0] - sprites.px[idx],
+      target[1] - sprites.py[idx]
+    ];
 
     var speed = SPRITE_MAX_SPEED;
-    var dist = desired.getMag();
+    var dist = vec2.get_mag(desired);
 
     if (dist < 100) {
       speed = math.map(dist, 0, 100, 0, SPRITE_MAX_SPEED);
     }
 
-    desired.setMag(speed);
+    vec2.set_mag(desired, speed);
 
-    force.x = desired.x - sprites.vx[idx];
-    force.y = desired.y - sprites.vy[idx];
+    force[0] = desired[0] - sprites.vx[idx];
+    force[1] = desired[1] - sprites.vy[idx];
 
-    force.limit(SPRITE_MAX_FORCE);
+    vec2.limit(force, SPRITE_MAX_FORCE);
   }
 
   return force;
 }
 
 function spriteFlee(sprites, idx, target) {
-  var force = new Vec2();
+  var force = [0, 0];
 
   if (idx < SPRITE_COUNT) {
-    var desired = new Vec2(
-      target.x - sprites.px[idx],
-      target.y - sprites.py[idx]
-    );
+    var desired = [
+      target[0] - sprites.px[idx],
+      target[1] - sprites.py[idx]
+    ];
 
-    var dist = desired.getMag();
+    var dist = vec2.get_mag(desired);
 
     if (dist < fleeDistance) {
-      desired.setMag(SPRITE_MAX_SPEED);
-      desired.x *= -1;
-      desired.y *= -1;
+      vec2.set_mag(desired, SPRITE_MAX_SPEED);
+      desired[0] *= -1;
+      desired[1] *= -1;
 
-      force.x = desired.x - sprites.vx[idx];
-      force.y = desired.y - sprites.vy[idx];
+      force[0] = desired[0] - sprites.vx[idx];
+      force[1] = desired[1] - sprites.vy[idx];
 
-      force.limit(SPRITE_MAX_FORCE);
+      vec2.limit(force, SPRITE_MAX_FORCE);
     }
   }
 
@@ -88,10 +88,10 @@ function spriteFlee(sprites, idx, target) {
 
 function spriteForce(sprites, idx, force) {
   if (idx < SPRITE_COUNT) {
-    sprites.ax[idx] += force.x;
-    sprites.ay[idx] += force.y;
-    sprites.sx[idx] += force.x * 0.25;
-    sprites.sy[idx] += force.x * 0.25;
+    sprites.ax[idx] += force[0];
+    sprites.ay[idx] += force[1];
+    sprites.sx[idx] += force[0] * 0.0125;
+    sprites.sy[idx] += force[0] * 0.0125;
   }
 }
 
@@ -119,13 +119,13 @@ function onKeyDown(e) {
 }
 
 function onMouseMove(e) {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
+  mouse[0] = e.clientX;
+  mouse[1] = e.clientY;
 }
 
 function onTouchMove(e) {
-  mouse.x = e.touches[0].clientX;
-  mouse.y = e.touches[0].clientY;
+  mouse[0] = e.touches[0].clientX;
+  mouse[1] = e.touches[0].clientY;
 }
 
 function spritesInit() {
@@ -147,7 +147,7 @@ function spritesInit() {
     var size = 1 + math.random(-0.25, 0.25);
     sprites.sx[i] = sprites.sy[i] = size;
 
-    var target = new Vec2(sprites.px[i], sprites.py[i]);
+    var target = [sprites.px[i], sprites.py[i]];
     sprites.target[i] = target;
 
     sprites.u0[i] = 0;
@@ -176,12 +176,12 @@ function update() {
     sprites.ay[i] = 0;
 
     var a = spriteArrive(sprites, i, sprites.target[i]);
-    a.x *= 0.75;
-    a.y *= 0.75;
+    a[0] *= 0.75;
+    a[1] *= 0.75;
 
     var f = spriteFlee(sprites, i, mouse);
-    f.x *= 0.75;
-    f.y *= 0.75;
+    f[1] *= 0.75;
+    f[1] *= 0.75;
 
     spriteForce(sprites, i, a);
     spriteForce(sprites, i, f);
@@ -209,7 +209,7 @@ function loop() {
   draw();
 }
 
-onload = () => {
+onload = function() {
   canvas = document.getElementById('c');
   canvas.width = innerWidth;
   canvas.height = innerHeight;
@@ -218,13 +218,13 @@ onload = () => {
   renderer.bkg(0.0, 0.0, 0.0);
 
   img = new Image();
-  img.onload = () => {
+  img.onload = function() {
     texture = lib.createTexture(renderer.gl, img);
     spritesInit();
   };
   img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAnUlEQVRYR+2XsQ6AIAxEYVD//3PVQcNAYhTKnSlphzKb3uOBUHIyHtk4PwUAbWA/j0tatm1ZqZrwx6PgNxQKAgGw4RUGgRAB/gYzNvwCaM1+tBxNA9rhEoQ/gFmz71n4GAiAMBAGzA2U/3UWROt29HcS1hNL20KvN/B7HWvuBakz8t2SPVsrdk8g/WCpDxlgQNDgWpMG0H7KBYC5gRtfzGAhGEQe7AAAAABJRU5ErkJgggAA';
 
-  mouse = new Vec2(canvas.width * 0.5, canvas.height * 0.5);
+  mouse = [canvas.width * 0.5, canvas.height * 0.5];
 
   document.body.addEventListener('mousemove', onMouseMove, false);
   document.body.addEventListener('touchmove', onTouchMove, false);
