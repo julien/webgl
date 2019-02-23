@@ -1,17 +1,12 @@
 'use strict';
 
-function Vec2(x, y) {
-  this.x = x ? x : 0;
-  this.y = y ? y : 0;
-}
-
-Vec2.prototype.angle = function (v2) {
-  if (this.x === 0 && this.y === 0 && v2.x === 0 && v2.y === 0) {
+function vec2_angle(v1, v2) {
+  if (v1[0] === 0 && v1[1] === 0 && v2[0] === 0 && v2[1] === 0) {
     return 0;
   }
-  var dot = this.x * v2.x + this.y * v2.y;
-  var v1mag = Math.sqrt(this.x * this.x + this.y * this.y);
-  var v2mag = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
+  var dot = v1[0] * v2[0] + v1[1] * v2[1];
+  var v1mag = Math.sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
+  var v2mag = Math.sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
   var amt = dot / (v1mag * v2mag);
   if (amt <= -1) {
     return Math.PI;
@@ -19,61 +14,73 @@ Vec2.prototype.angle = function (v2) {
     return 0;
   }
   return Math.acos(amt);
-};
+}
 
-Vec2.prototype.dist = function (v2) {
-  var dx = this.x - v2.x;
-  var dy = this.y - v2.y;
-  return Math.sqrt(dx * dx + dy * dy);
-};
+function vec2_dist(v1, v2) {
+  var dx = v1[0] - v2[0];
+  var dy = v1[1] - v2[1];
+  return Math.sqrt(dx*dx + dy*dy);
+}
 
-Vec2.prototype.dot = function (v2) {
-  return this.x * v2.x + this.y * v2.y;
-};
+function vec2_dot(v1, v2) {
+  return v1[0]*v2[0] + v1[1]*v2[1];
+}
 
-Vec2.prototype.fromAngle = function (angle) {
-  return new Vec2(Math.cos(angle), Math.sin(angle));
-};
+function vec2_from_angle(angle) {
+  return [Math.cos(angle), Math.sin(angle)];
+}
 
-Vec2.prototype.getMag = function () {
-  return Math.sqrt(this.x * this.x + this.y * this.y);
-};
+function vec2_get_mag(v1) {
+  return Math.sqrt(v1[0]*v1[0] + v1[1]*v1[1]);
+}
 
-Vec2.prototype.getMagSq = function () {
-  return this.x * this.x + this.y * this.y;
-};
+function vec2_get_mag_sq(v1) {
+  return v1[0]*v1[0] + v1[1]*v1[1];
+}
 
-Vec2.prototype.heading = function () {
-  return Math.atan2(this.y, this.x); // not sure if this should not be inverted
-};
+function vec2_heading(v1) {
+  return Math.atan2(v1[1], v1[0]);
+}
 
-Vec2.prototype.normalize = function () {
-  var m = this.getMag();
+function vec2_limit(v1, max) {
+  if (vec2_get_mag_sq(v1) > max * max) {
+    vec2_normalize(v1);
+    v1[0] *= max;
+    v1[1] *= max;
+  }
+}
+
+function vec2_normalize(v1) {
+  var m = vec2_get_mag(v1);
   if (m !== 0 && m !== 1) {
-    this.x /= m;
-    this.y /= m;
+    v1[0] /= m;
+    v1[1] /= m;
   }
-};
+}
 
-Vec2.prototype.limit = function (max) {
-  if (this.getMagSq() > max * max) {
-    this.normalize();
-    this.x *= max;
-    this.y *= max;
-  }
-};
+function vec2_rotate(v1, theta) {
+  var t = v1[0];
+  v1[0] = v1[0] * Math.cos(theta) - v1[1] * Math.sin(theta);
+  v1[1] = t * Math.sin(theta) + v1[1] * Math.cos(theta);
+}
 
-Vec2.prototype.rotate = function (theta) {
-  var t = this.x;
-  this.x = this.x * Math.cos(theta) - this.y * Math.sin(theta);
-  this.y = t * Math.sin(theta) + this.y * Math.cos(theta);
-};
+function vec2_set_mag(v1, len) {
+  vec2_normalize(v1);
+  v1[0] *= len;
+  v1[1] *= len;
+}
 
-Vec2.prototype.setMag = function (len) {
-  this.normalize();
-  this.x *= len;
-  this.y *= len;
+module.exports = {
+  angle: vec2_angle,
+  dist: vec2_dist,
+  dot: vec2_dot,
+  from_angle: vec2_from_angle,
+  get_mag: vec2_get_mag,
+  get_mag_sq: vec2_get_mag_sq,
+  heading: vec2_heading,
+  limit: vec2_limit,
+  normalize: vec2_normalize,
+  rotate: vec2_rotate,
+  set_mag: vec2_set_mag
 };
-
-module.exports = Vec2;
 
