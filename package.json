@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "scripts": {
     "start": "budo src/index.js:bundle.js --live",
+    "build": "browserify -d -e src/index -t babelify | uglifyjs -c -m > bundle.min.js",
     "lint": "eslint src/*.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "budo": "^11.6.0",
-    "eslint": "^5.13.0"
+    "@babel/core": "^7.3.3",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^10.0.0",
+    "budo": "^11.6.1",
+    "eslint": "^5.13.0",
+    "uglify-js": "^3.4.9"
   }
 }
