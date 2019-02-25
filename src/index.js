@@ -95,23 +95,28 @@ function spriteForce(sprites, idx, force) {
   }
 }
 
-function onKeyDown(e) {
-  if (e.keyCode === 38) {
+function onMouseDown(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.button === 0) {
     if (sprites.count + 100 < SPRITE_COUNT) {
       sprites.count += 100;
     }
   }
-  if (e.keyCode === 40) {
+  if (e.button === 2) {
     if (sprites.count - 100 > 1) {
       sprites.count -= 100;
     }
   }
-  if (e.keyCode === 39) {
+}
+
+function onMouseWheel(e) {
+  if (e.deltaY > 0) {
     if (fleeDistance + 10 < MAX_FLEE_DISTANCE) {
       fleeDistance += 10;
     }
   }
-  if (e.keyCode === 37) {
+  if (e.deltaY < 0) {
     if (fleeDistance - 10 > MIN_FLEE_DISTANCE) {
       fleeDistance -= 10;
     }
@@ -144,7 +149,7 @@ function spritesInit() {
 
     sprites.rgba[i] = Math.random() * 0xFFFFFFFF;
 
-    var size = 1 + math.random(-0.25, 0.25);
+    var size = 1 + math.random(0.25, 1.5);
     sprites.sx[i] = sprites.sy[i] = size;
 
     var target = [sprites.px[i], sprites.py[i]];
@@ -228,6 +233,8 @@ onload = function() {
 
   document.body.addEventListener('mousemove', onMouseMove, false);
   document.body.addEventListener('touchmove', onTouchMove, false);
-  document.body.addEventListener('keydown', onKeyDown, false);
+  document.addEventListener('mousedown', onMouseDown, false);
+  document.addEventListener('mousewheel', onMouseWheel, false);
+  canvas.addEventListener('contextmenu', e => e.preventDefault());
 };
 
