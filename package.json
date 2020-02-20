@@ -2,7 +2,6 @@
   "name": "gl",
   "version": "1.0.0",
   "scripts": {
-    "start": "start an local http server",
     "lint": "eslint src/*.js"
   },
   "keywords": [],
