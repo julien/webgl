@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		body,
+		html {
+			margin: 0;
+			width: 100%;
+			height: 100%;
+		}
+		canvas {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+	<body>
+		<canvas id="c"></canvas>
+		<script>
+			onload = function() {
+				var c = document.getElementById("c");
+				var g = c.getContext("webgl");
+				if (!g) throw "error creating webgl context";
+
+				var p = g.createProgram();
+				var s;
+				g.shaderSource(
+					(s = g.createShader(g.VERTEX_SHADER)),
+					"attribute vec2 p; void main() { gl_Position = vec4(p, 0, 1); }"
+				);
+				g.compileShader(s);
+				g.attachShader(p, s);
+
+				g.shaderSource(
+					(s = g.createShader(g.FRAGMENT_SHADER)),
+					`
+					#ifdef GL_ES
+					precision mediump float;
+					#endif
+
+					uniform float t;
+					uniform vec2 r;
+
+					void main() {
+						vec2 coord = 8. * (gl_FragCoord.xy / r);
+
+						for (int n = 1; n < 64; n++) {
+							float i = float(n);
+
+							coord += vec2(.7 / i * sin(i * coord.y + t + .9 * i) + .8,
+														.4 / i * sin(coord.x + t + .3 * i) + .6);
+						}
+
+						vec3 color = vec3(.5 * sin(coord.x) + .5, .5 * sin(coord.y) + .5,
+										sin(coord.x + coord.y));
+
+
+						gl_FragColor = vec4(color, 1.);
+					}`
+				);
+
+				g.compileShader(s);
+				g.attachShader(p, s);
+
+				g.linkProgram(p);
+				g.useProgram(p);
+
+				g.enableVertexAttribArray(g.getAttribLocation(p, "p"));
+				g.bindBuffer(g.ARRAY_BUFFER, g.createBuffer());
+				g.bufferData(
+					g.ARRAY_BUFFER,
+					new Float32Array([-1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, -1.0]),
+					g.STATIC_DRAW
+				);
+				g.vertexAttribPointer(0, 2, g.FLOAT, 0, 0, 0);
+
+				/* previous time, current time */
+				var pt = 0,
+					ct = 0;
+
+				(function L() {
+					var now = new Date().getTime();
+					if (pt) {
+						var diff = now - pt;
+						ct += (2 * diff) / 1000;
+					}
+					pt = now;
+
+					g.uniform1f(g.getUniformLocation(p, "t"), ct);
+					g.uniform2f(g.getUniformLocation(p, "r"), innerWidth, innerHeight);
+
+					g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
+
+					requestAnimationFrame(L);
+				})();
+			};
+		</script>
+	</body>
+</html>
