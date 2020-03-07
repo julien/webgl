@@ -1,7 +1,6 @@
 import Renderer from "./renderer.js";
 import vec2 from "./vec2.js";
-import { createTexture } from "./gl-utils.js";
-import { map, random } from "./math-utils.js";
+import { createTexture, map, random } from "./utils.js";
 
 const SPRITE_COUNT = 1;
 let canvas, img, renderer, texture;
