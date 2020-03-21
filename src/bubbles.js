@@ -236,6 +236,6 @@ onload = function() {
 	document.body.addEventListener("mousemove", onMouseMove, false);
 	document.body.addEventListener("touchmove", onTouchMove, false);
 	document.addEventListener("mousedown", onMouseDown, false);
-	document.addEventListener("mousewheel", onMouseWheel, false);
+	document.addEventListener("wheel", onMouseWheel, false);
 	canvas.addEventListener("contextmenu", e => e.preventDefault());
 };
