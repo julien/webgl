@@ -79,7 +79,7 @@ const vec2 = {
 	limit,
 	normalize,
 	rotate,
-	setMag
+	setMag,
 };
 
 export default vec2;

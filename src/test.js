@@ -20,8 +20,8 @@ const sprites = {
 	v0: Array.from(new Array(SPRITE_COUNT)).fill(0),
 	v1: Array.from(new Array(SPRITE_COUNT)).fill(0),
 
+	vx: Array.from(new Array(SPRITE_COUNT)).fill(0),
 	vy: Array.from(new Array(SPRITE_COUNT)).fill(0),
-	vy: Array.from(new Array(SPRITE_COUNT)).fill(0)
 };
 
 function spritesInit() {
@@ -82,7 +82,7 @@ function loop() {
 	draw();
 }
 
-onload = function() {
+onload = function () {
 	canvas = document.getElementById("c");
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
@@ -91,7 +91,7 @@ onload = function() {
 	renderer.bkg(0.0, 0.0, 0.0);
 
 	img = new Image();
-	img.onload = function() {
+	img.onload = function () {
 		texture = createTexture(renderer.gl, img);
 		spritesInit();
 	};
