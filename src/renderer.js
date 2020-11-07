@@ -85,7 +85,7 @@ export default class Renderer {
 			-1,
 			1,
 			0,
-			0
+			0,
 		]);
 
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
@@ -98,7 +98,9 @@ export default class Renderer {
 			indexA < MAX_BATCH * VERTICES_PER_QUAD;
 			indexA += VERTICES_PER_QUAD, indexB += 4
 		) {
+			/* eslint-disable */
 			(this.vIndexData[indexA + 0] = indexB),
+				/* eslint-disable */
 				(this.vIndexData[indexA + 1] = indexB + 1),
 				(this.vIndexData[indexA + 2] = indexB + 2),
 				(this.vIndexData[indexA + 3] = indexB + 0),
