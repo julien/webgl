@@ -1,6 +1,5 @@
 import Renderer from "./renderer.js";
-import vec2 from "./vec2.js";
-import { createTexture, map, random } from "./utils.js";
+import { createTexture, random } from "./utils.js";
 
 const SPRITE_COUNT = 1;
 let canvas, img, renderer, texture;
@@ -33,12 +32,12 @@ function spritesInit() {
 		sprites.dy[i] = img.height;
 		sprites.hw[i] = img.width * 0.5;
 		sprites.hh[i] = img.height * 0.5;
-		sprites.px[i] = hw; // + random(-hw, hw);
-		sprites.py[i] = hh; // + random(-hh, hh);
+		sprites.px[i] = hw + random(-hw, hw);
+		sprites.py[i] = hh + random(-hh, hh);
 
 		sprites.rgba[i] = 0xffffffff; // Math.random() * 0xFFFFFFFF;
 
-		const size = 1; // 0.2 + random(0.25, 1.5);
+		const size = 0.2 + random(0.25, 1.5);
 		sprites.sx[i] = sprites.sy[i] = size;
 
 		sprites.u0[i] = 0;
