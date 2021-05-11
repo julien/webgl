@@ -30,7 +30,7 @@ export function audio(options = {}) {
 			masterGain.connect(context.destination);
 			masterGain.connect(analyser);
 
-			const source = context.createMediaElementSource(audio);
+			const source = context.createMediaElementSource(element);
 			source.connect(masterGain);
 
 			const binCount = analyser.frequencyBinCount;
@@ -45,14 +45,14 @@ export function audio(options = {}) {
 
 	return {
 		destroy() {
-			audio.pause();
-			audio.currentTime = 0;
-			audio.removeEventListener("play", handlePlay);
+			element.pause();
+			element.currentTime = 0;
+			element.removeEventListener("play", handlePlay);
 		},
 
 		play(src) {
-			audio.addEventListener("play", handlePlay);
-			audio.src = src;
+			element.addEventListener("play", handlePlay);
+			element.src = src;
 		},
 
 		update(gl) {
